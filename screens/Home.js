@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, FlatList, TouchableWithoutFeedback, Image, ImageBackground, Animated,ScrollView, Touchable } from 'react-native';
 import { dummyData, COLORS, SIZES, FONTS, icons, images } from '../constants';
-import { Profiles } from '../components';
+import { Profiles, ProgressBar } from '../components';
 
 
 const Home = ({ navigation }) => {
@@ -233,6 +233,86 @@ const Home = ({ navigation }) => {
         )
     }
 
+    // FUNCTION FOR CONTINUE WATCHING SECTION
+    function renderContinueWatchingSection() {
+        return (
+            <View
+                style={{
+                    marginTop: SIZES.padding
+                }}
+            >
+                {/* HEADER */}
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: SIZES.padding,
+                        alignItems:'center'
+                    }}
+                >
+                    <Text style={{flex: 1, color: COLORS.white, ...FONTS.h2}}>Continue Watching</Text>
+                    <Image 
+                        source={icons.right_arrow}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            tintColor: COLORS.primary
+                        }}
+                    />
+                </View>
+
+                {/* MOVIE LIST */}
+                <FlatList 
+                    horizontal
+                    showsVerticalScrollIndicator
+                    contentContainerStyle={{
+                        marginTop: SIZES.padding
+                    }}
+                    data={dummyData.continueWatching}
+                    keyExtractor={item=> `${item.id}`}
+                    renderItem={({ item, index }) => {
+                        return (
+                            <TouchableWithoutFeedback
+                                onPress={()=> navigate.navigate('MovieDetail', {selectedMovie: item })}
+                            >
+                                <View
+                                    style={{
+                                        marginLeft: index == 0 ? SIZES.padding : 20,
+                                        marginRight: index == dummyData.continueWatching.length - 1 ? SIZES.padding : 0
+                                    }}
+                                >
+                                    {/* MOVIE THUMBNAIL */}
+                                    <Image 
+                                        source={item.thumbnail}
+                                        resizeMode="cover"
+                                        style={{
+                                            width: SIZES.width / 3,
+                                            height: (SIZES.width / 3) + 60,
+                                            borderRadius: 20
+                                        }}
+                                    />
+
+                                    {/* MOVIE TITLE */}
+                                    <Text style={{marginTop:SIZES.base, color:COLORS.white, ...FONTS.h4}}>{item.name}</Text>
+
+                                    {/* PROGRESS BAR */}
+                                    <ProgressBar 
+                                        containerStyle={{
+                                            marginTop: SIZES.radius
+                                        }}
+                                        barStyle={{
+                                            height: 3
+                                        }}
+                                        barPercentage={item.overallProgress}
+                                    />
+                                </View>
+                            </TouchableWithoutFeedback>
+                        )
+                    }}
+                />
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView
             style={{
@@ -250,6 +330,8 @@ const Home = ({ navigation }) => {
                 {renderNewSeasonSection()}
 
                 {renderDots()}
+
+                {renderContinueWatchingSection()}
             </ScrollView>
 
 
