@@ -153,7 +153,7 @@ const Home = ({ navigation }) => {
                                                         ...FONTS.h3
                                                     }}
                                                 >
-                                                    Play Now Bitches
+                                                    Play Now
                                                 </Text>
                                         </View>
 
